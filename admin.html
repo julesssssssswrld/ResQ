@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ResQ Catarman - Operations Command Center & Admin Panel">
+  <title>ResQ — Command Center</title>
+
+  <!-- Fonts (same as home.html) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+
+  <!-- Shared portal stylesheet -->
+  <link rel="stylesheet" href="portal.css">
+</head>
+<body>
+
+<div class="admin-shell">
+
+  <!-- =====================================================================
+       Sidebar Navigation
+       ===================================================================== -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <span class="brand-name">
+        ResQ
+        <span class="brand-pill">Admin</span>
+      </span>
+      <span class="brand-sub">Operations Center</span>
+    </div>
+
+    <nav class="sidebar-nav" aria-label="Admin navigation">
+      <span class="nav-section-label">Operations</span>
+
+      <button type="button" class="nav-item active" data-panel="dashboard" id="nav-dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+          <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+        </svg>
+        Dashboard
+      </button>
+
+      <button type="button" class="nav-item" data-panel="contacts" id="nav-contacts">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+        </svg>
+        Emergency Contacts
+      </button>
+
+      <button type="button" class="nav-item" data-panel="advisory" id="nav-advisory">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+          <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+        </svg>
+        Advisory Broadcast
+      </button>
+
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="live-badge">
+        <span class="pulse-dot" aria-hidden="true"></span>
+        Live Operations
+      </div>
+    </div>
+  </aside>
+
+  <!-- =====================================================================
+       Main Content
+       ===================================================================== -->
+  <div class="admin-main">
+
+    <!-- Topbar -->
+    <header class="admin-topbar">
+      <div>
+        <h1 class="topbar-title" id="topbarTitle">Dashboard</h1>
+        <p class="topbar-subtitle" id="topbarSubtitle">Catarman, Northern Samar</p>
+      </div>
+      <div class="topbar-actions">
+        <a href="home.html" class="icon-btn" title="View Public Portal" target="_blank" aria-label="View Public Portal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+            <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+          </svg>
+        </a>
+      </div>
+    </header>
+
+
+    <!-- =================================================================
+         PANEL: Dashboard
+         ================================================================= -->
+    <section class="content-panel active" id="panel-dashboard" aria-label="Dashboard panel">
+
+      <!-- Stat Row -->
+      <div class="stats-row">
+
+        <!-- Active Units -->
+        <div class="stat-card">
+          <div class="stat-top">
+            <div class="stat-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+            </div>
+            <span class="stat-change neu" id="statUnitsChange">—</span>
+          </div>
+          <span class="stat-value" id="statUnitsValue">—</span>
+          <span class="stat-label">Response Units Active</span>
+        </div>
+
+        <!-- Last Updated -->
+        <div class="stat-card">
+          <div class="stat-top">
+            <div class="stat-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
+            </div>
+            <span class="stat-change neu" id="statTimeChange">—</span>
+          </div>
+          <span class="stat-value" id="statTimeValue" style="font-size:1.25rem;">—</span>
+          <span class="stat-label">Portal Last Updated</span>
+        </div>
+
+      </div>
+
+      <!-- Live Map + Unit Status Side Panel -->
+      <div class="map-layout">
+
+        <!-- Map Card -->
+        <div class="map-card">
+          <div class="card-head">
+            <div class="card-title-group">
+              <div class="card-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                  <circle cx="12" cy="10" r="3"/>
+                </svg>
+              </div>
+              <div>
+                <h2 class="card-title">Live Situational Map</h2>
+                <p class="card-desc">Catarman municipal area — OpenStreetMap</p>
+              </div>
+            </div>
+            <span class="sev-pill info" id="mapOpBadge">Loading…</span>
+          </div>
+          <!-- Leaflet map container -->
+          <div id="liveMap" aria-label="Interactive map of Catarman, Northern Samar"></div>
+        </div>
+
+        <!-- Right side panel: unit status + advisory strip -->
+        <div class="side-panel">
+
+          <!-- Active Incidents Log -->
+          <div class="card" style="flex:1;overflow:hidden;display:flex;flex-direction:column;">
+            <div class="card-head">
+              <div class="card-title-group">
+                <div class="card-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="12" y1="8" x2="12" y2="12"/>
+                    <line x1="12" y1="16" x2="12.01" y2="16"/>
+                  </svg>
+                </div>
+                <div>
+                  <h2 class="card-title">Active Incidents</h2>
+                  <p class="card-desc">Click map to drop incident pin</p>
+                </div>
+              </div>
+              <span class="stat-change neu" id="incidentCount">0</span>
+            </div>
+            <div class="card-body" style="flex:1;overflow-y:auto;padding-top:.75rem;padding-bottom:.75rem;">
+              <!-- Incident entries — populated by map pin drops / backend -->
+              <div class="status-list" id="incidentList">
+                <!-- Empty state -->
+                <div id="incidentEmpty" style="text-align:center;padding:1.5rem 0;">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:2rem;height:2rem;color:var(--text-muted);margin-bottom:.5rem;" aria-hidden="true">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                    <circle cx="12" cy="10" r="3"/>
+                  </svg>
+                  <p style="font-size:.8125rem;color:var(--text-muted);font-weight:600;">No active incidents</p>
+                  <p style="font-size:.75rem;color:var(--text-muted);margin-top:.2rem;">Click anywhere on the map to log one</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Active Advisory Strip -->
+          <div class="card">
+            <div class="card-head">
+              <div class="card-title-group">
+                <div class="card-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                    <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+                  </svg>
+                </div>
+                <div>
+                  <h2 class="card-title">Active Advisory</h2>
+                </div>
+              </div>
+              <span class="sev-pill warning" id="dashAdvisoryPill">—</span>
+            </div>
+            <div class="advisory-strip">
+              <span class="advisory-strip-label" id="dashAdvisoryDate">—</span>
+              <p class="advisory-strip-title" id="dashAdvisoryTitle">No advisory data loaded yet.</p>
+              <p class="advisory-strip-body" id="dashAdvisoryBody">Connect the backend to populate advisory content here.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Emergency Response Units Directory Grid (matching home.html layout) -->
+      <section>
+        <div class="section-head">
+          <div>
+            <h2 class="section-title">Emergency Response Units Directory</h2>
+            <p class="section-sub">All registered municipal agencies and response departments</p>
+          </div>
+        </div>
+
+        <!-- Skeleton cards — same structure as home.html .sk-card -->
+        <div class="units-grid" id="dashUnitsGrid">
+          <div class="sk-card"><div class="sk-top"><div class="sk-box"></div><div class="sk-pill"></div></div><div class="sk-body"><div class="sk-bar sk-w70"></div><div class="sk-bar sk-w45"></div></div></div>
+          <div class="sk-card"><div class="sk-top"><div class="sk-box"></div><div class="sk-pill"></div></div><div class="sk-body"><div class="sk-bar sk-w70"></div><div class="sk-bar sk-w45"></div></div></div>
+          <div class="sk-card"><div class="sk-top"><div class="sk-box"></div><div class="sk-pill"></div></div><div class="sk-body"><div class="sk-bar sk-w70"></div><div class="sk-bar sk-w45"></div></div></div>
+          <div class="sk-card"><div class="sk-top"><div class="sk-box"></div><div class="sk-pill"></div></div><div class="sk-body"><div class="sk-bar sk-w70"></div><div class="sk-bar sk-w45"></div></div></div>
+          <div class="sk-card"><div class="sk-top"><div class="sk-box"></div><div class="sk-pill"></div></div><div class="sk-body"><div class="sk-bar sk-w70"></div><div class="sk-bar sk-w45"></div></div></div>
+          <div class="sk-card"><div class="sk-top"><div class="sk-box"></div><div class="sk-pill"></div></div><div class="sk-body"><div class="sk-bar sk-w70"></div><div class="sk-bar sk-w45"></div></div></div>
+          <div class="sk-card"><div class="sk-top"><div class="sk-box"></div><div class="sk-pill"></div></div><div class="sk-body"><div class="sk-bar sk-w70"></div><div class="sk-bar sk-w45"></div></div></div>
+          <div class="sk-card"><div class="sk-top"><div class="sk-box"></div><div class="sk-pill"></div></div><div class="sk-body"><div class="sk-bar sk-w70"></div><div class="sk-bar sk-w45"></div></div></div>
+        </div>
+      </section>
+
+    </section><!-- /panel-dashboard -->
+
+
+    <!-- =================================================================
+         PANEL: Emergency Contacts Manager
+         ================================================================= -->
+    <section class="content-panel" id="panel-contacts" aria-label="Contacts manager panel">
+
+      <!-- MDRRMO Primary Speed Dial (feeds index.html emergency button) -->
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title-group">
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+            </div>
+            <div>
+              <h2 class="card-title">Primary MDRRMO Hotline</h2>
+              <p class="card-desc">Powers the emergency speed-dial button on index.html (mobile emergency view)</p>
+            </div>
+          </div>
+          <span class="sev-pill emergency">Emergency View</span>
+        </div>
+
+        <div class="card-body">
+          <form id="mdrrmoForm" class="form-block">
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="mdrrmoName">Agency / Office Name</label>
+                <input type="text" id="mdrrmoName" class="form-input" placeholder="e.g. MDRRMO Catarman" disabled>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="mdrrmoSub">Full Official Name</label>
+                <input type="text" id="mdrrmoSub" class="form-input" placeholder="Municipal Disaster Risk Reduction & Management Office" disabled>
+              </div>
+            </div>
+
+            <div class="form-row-3">
+              <div class="form-group">
+                <label class="form-label" for="mdrrmoHotlines">Display Hotlines</label>
+                <input type="text" id="mdrrmoHotlines" class="form-input" placeholder="e.g. 0927-123-4567 / (055) 500-9111" disabled>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="mdrrmoCallUri">Emergency Call URI</label>
+                <input type="text" id="mdrrmoCallUri" class="form-input" placeholder="tel:09271234567" disabled>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="mdrrmoLocation">Command Post Location</label>
+                <input type="text" id="mdrrmoLocation" class="form-input" placeholder="e.g. Catarman Municipal Hall Compound" disabled>
+              </div>
+            </div>
+
+            <div style="display:flex;justify-content:flex-end;gap:.75rem;">
+              <button type="submit" class="btn-primary" disabled>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                  <polyline points="17 21 17 13 7 13 7 21"/>
+                  <polyline points="7 3 7 8 15 8"/>
+                </svg>
+                Save MDRRMO Hotline
+              </button>
+            </div>
+
+            <p style="font-size:.8125rem;color:var(--text-muted);">
+              <em>Backend required — changes will be persisted to the SQLite database and reflect live on the mobile emergency portal.</em>
+            </p>
+          </form>
+        </div>
+      </div>
+
+      <!-- Response Unit Directory (feeds both index.html and home.html) -->
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title-group">
+            <div class="card-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+            </div>
+            <div>
+              <h2 class="card-title">Response Unit Directory</h2>
+              <p class="card-desc">Manages emergency agencies listed on both the public portal and mobile emergency view</p>
+            </div>
+          </div>
+          <button type="button" class="btn-primary" id="openAddUnitBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+            Add Unit
+          </button>
+        </div>
+
+        <div class="card-body">
+          <!-- Unit rows — populated by JS / backend -->
+          <div class="unit-table" id="contactsUnitTable">
+
+            <!-- Skeleton rows while loading -->
+            <div class="unit-row">
+              <div class="unit-row-icon"><div class="sk-box" style="width:1.6rem;height:1.6rem;border-radius:6px;"></div></div>
+              <div class="unit-row-info">
+                <div class="sk-bar sk-w70" style="height:.75rem;margin-bottom:.35rem;"></div>
+                <div class="sk-bar sk-w45" style="height:.6rem;"></div>
+              </div>
+              <div class="sk-pill" style="width:5rem;height:1.6rem;border-radius:9999px;flex-shrink:0;"></div>
+              <div class="sk-pill" style="width:3.5rem;height:1.6rem;border-radius:6px;flex-shrink:0;"></div>
+            </div>
+
+            <div class="unit-row">
+              <div class="unit-row-icon"><div class="sk-box" style="width:1.6rem;height:1.6rem;border-radius:6px;"></div></div>
+              <div class="unit-row-info">
+                <div class="sk-bar" style="width:60%;height:.75rem;margin-bottom:.35rem;"></div>
+                <div class="sk-bar sk-w45" style="height:.6rem;"></div>
+              </div>
+              <div class="sk-pill" style="width:5rem;height:1.6rem;border-radius:9999px;flex-shrink:0;"></div>
+              <div class="sk-pill" style="width:3.5rem;height:1.6rem;border-radius:6px;flex-shrink:0;"></div>
+            </div>
+
+            <div class="unit-row">
+              <div class="unit-row-icon"><div class="sk-box" style="width:1.6rem;height:1.6rem;border-radius:6px;"></div></div>
+              <div class="unit-row-info">
+                <div class="sk-bar" style="width:55%;height:.75rem;margin-bottom:.35rem;"></div>
+                <div class="sk-bar sk-w45" style="height:.6rem;"></div>
+              </div>
+              <div class="sk-pill" style="width:5rem;height:1.6rem;border-radius:9999px;flex-shrink:0;"></div>
+              <div class="sk-pill" style="width:3.5rem;height:1.6rem;border-radius:6px;flex-shrink:0;"></div>
+            </div>
+
+            <div class="unit-row">
+              <div class="unit-row-icon"><div class="sk-box" style="width:1.6rem;height:1.6rem;border-radius:6px;"></div></div>
+              <div class="unit-row-info">
+                <div class="sk-bar" style="width:75%;height:.75rem;margin-bottom:.35rem;"></div>
+                <div class="sk-bar sk-w45" style="height:.6rem;"></div>
+              </div>
+              <div class="sk-pill" style="width:5rem;height:1.6rem;border-radius:9999px;flex-shrink:0;"></div>
+              <div class="sk-pill" style="width:3.5rem;height:1.6rem;border-radius:6px;flex-shrink:0;"></div>
+            </div>
+
+          </div>
+
+          <p style="font-size:.8125rem;color:var(--text-muted);margin-top:.5rem;">
+            <em>Saved units are stored in SQLite and served to both home.html and index.html via the API.</em>
+          </p>
+        </div>
+      </div>
+
+    </section><!-- /panel-contacts -->
+
+
+    <!-- =================================================================
+         PANEL: Advisory Broadcast
+         ================================================================= -->
+    <section class="content-panel" id="panel-advisory" aria-label="Advisory broadcast panel">
+
+      <div style="display:grid;grid-template-columns:1fr 340px;gap:1.5rem;align-items:start;">
+
+        <!-- Broadcast Form -->
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title-group">
+              <div class="card-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 2L11 13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                </svg>
+              </div>
+              <div>
+                <h2 class="card-title">Broadcast Public Advisory</h2>
+                <p class="card-desc">Push emergency warnings to all portal views in real-time</p>
+              </div>
+            </div>
+            <span class="sev-pill warning" id="advisoryBadge">Advisory</span>
+          </div>
+
+          <div class="card-body">
+            <form id="advisoryForm" class="form-block">
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="advTitle">Advisory Headline / Alert Title</label>
+                  <input type="text" id="advTitle" class="form-input" placeholder="e.g. Heavy Rainfall & Flood Monitoring Warning" disabled>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="advSeverity">Warning Severity</label>
+                  <select id="advSeverity" class="form-select" disabled>
+                    <option value="warning">Yellow / Advisory Warning</option>
+                    <option value="emergency">Red Alert / Evacuation Emergency</option>
+                    <option value="info">Blue / Public Safety Notice</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="advBody">Advisory Message & Guidance</label>
+                <textarea id="advBody" class="form-textarea" placeholder="Detailed instructions for citizens, affected barangays, evacuation centers..." disabled></textarea>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="advDate">Timestamp / Broadcast Notice</label>
+                  <input type="text" id="advDate" class="form-input" placeholder="e.g. Today, 10:30 AM" disabled>
+                </div>
+
+                <div class="form-group" style="justify-content:flex-end;">
+                  <button type="submit" class="btn-primary" disabled>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M22 2L11 13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                    </svg>
+                    Broadcast Advisory
+                  </button>
+                </div>
+              </div>
+
+            </form>
+          </div>
+        </div>
+
+        <!-- Live Preview -->
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title-group">
+              <div class="card-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+              </div>
+              <div>
+                <h2 class="card-title">Portal Preview</h2>
+                <p class="card-desc">As it will appear on home.html</p>
+              </div>
+            </div>
+          </div>
+          <div class="advisory-strip">
+            <span class="advisory-strip-label" id="previewDate">Date / Timestamp</span>
+            <p class="advisory-strip-title" id="previewTitle">Advisory headline will appear here</p>
+            <p class="advisory-strip-body" id="previewBody">Message body will render here as you type.</p>
+          </div>
+        </div>
+
+      </div>
+
+    </section><!-- /panel-advisory -->
+
+
+    <!-- panel-weather removed — weather is auto-fetched from Open-Meteo -->
+
+  </div><!-- /admin-main -->
+</div><!-- /admin-shell -->
+
+
+<!-- =====================================================================
+     Add / Edit Unit Modal
+     ===================================================================== -->
+<div class="modal-backdrop" id="unitModal" aria-hidden="true">
+  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="unitModalTitle">
+    <header class="modal-head">
+      <h3 class="modal-title" id="unitModalTitle">Add Emergency Response Unit</h3>
+      <button type="button" class="modal-close" id="closeUnitModal" aria-label="Close dialog">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </header>
+
+    <form id="unitModalForm">
+      <div class="modal-body">
+        <input type="hidden" id="unitModalId">
+
+        <div class="form-group">
+          <label class="form-label" for="unitModalName">Agency / Department Name</label>
+          <input type="text" id="unitModalName" class="form-input" placeholder="e.g. BFP Catarman Fire Station" required disabled>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="unitModalHotline">Emergency Contact Hotline</label>
+          <input type="text" id="unitModalHotline" class="form-input" placeholder="e.g. (055) 500-3473" required disabled>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="unitModalCategory">Service Category</label>
+            <select id="unitModalCategory" class="form-select" disabled>
+              <option value="rescue">Rescue &amp; Evacuation</option>
+              <option value="fire">Fire &amp; Suppression</option>
+              <option value="police">Police &amp; Security</option>
+              <option value="medical">Hospital &amp; Medical ER</option>
+              <option value="maritime">Coast Guard &amp; Maritime</option>
+              <option value="humanitarian">Red Cross &amp; Relief</option>
+              <option value="utility">Power &amp; Infrastructure</option>
+              <option value="health">Public Health &amp; Sanitation</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="unitModalStatus">Readiness Status</label>
+            <input type="text" id="unitModalStatus" class="form-input" placeholder="e.g. Active Dispatch" disabled>
+          </div>
+        </div>
+      </div>
+
+      <footer class="modal-foot">
+        <button type="button" class="btn-ghost" id="cancelUnitModal">Cancel</button>
+        <button type="submit" class="btn-primary" id="saveUnitBtn" disabled>Save Unit</button>
+      </footer>
+    </form>
+  </div>
+</div>
+
+
+<!-- Toast notification -->
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+    <polyline points="22 4 12 14.01 9 11.01"/>
+  </svg>
+  <span id="toastMsg">Saved successfully!</span>
+</div>
+
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV/XN2Gm8=" crossorigin=""></script>
+<script src="admin.js"></script>
+</body>
+</html>

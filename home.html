@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="home.css">
+  <link rel="stylesheet" href="portal.css">
 </head>
 <body>
   <main class="home-app">
@@ -206,5 +206,77 @@
       </div>
     </a>
   </template>
+
+  <script>
+    /* =====================================================================
+       ResQ — home.html live weather widget (Open-Meteo, no API key)
+       Attribution: "Weather data by Open-Meteo.com"
+       ===================================================================== */
+
+    const WMO = {
+      0:'Clear Sky', 1:'Mainly Clear', 2:'Partly Cloudy', 3:'Overcast',
+      45:'Foggy', 48:'Icy Fog',
+      51:'Light Drizzle', 53:'Drizzle', 55:'Heavy Drizzle',
+      56:'Light Freezing Drizzle', 57:'Freezing Drizzle',
+      61:'Light Rain', 63:'Moderate Rain', 65:'Heavy Rain',
+      66:'Light Freezing Rain', 67:'Freezing Rain',
+      71:'Light Snow', 73:'Moderate Snow', 75:'Heavy Snow',
+      77:'Snow Grains',
+      80:'Light Rainshowers', 81:'Rainshowers', 82:'Violent Rainshowers',
+      85:'Light Snow Showers', 86:'Heavy Snow Showers',
+      95:'Thunderstorm', 96:'Thunderstorm w/ Hail', 99:'Thunderstorm w/ Heavy Hail'
+    };
+
+    async function loadWeather() {
+      try {
+        const url =
+          'https://api.open-meteo.com/v1/forecast' +
+          '?latitude=12.4974&longitude=124.6349' +
+          '&current=temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m,weather_code' +
+          '&wind_speed_unit=kmh&timezone=Asia%2FManila';
+
+        const res  = await fetch(url);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+
+        const c         = data.current;
+        const tempC     = Math.round(c.temperature_2m);
+        const humidity  = Math.round(c.relative_humidity_2m);
+        const wind      = Math.round(c.wind_speed_10m);
+        const precip    = c.precipitation.toFixed(1);
+        const condition = WMO[c.weather_code] ?? 'Unknown';
+
+        const el = id => document.getElementById(id);
+        const set = (id, val) => { const e = el(id); if (e) e.textContent = val; };
+
+        set('weatherTemp',      `${tempC}°C`);
+        set('weatherCondition', condition);
+        set('weatherDetails',   `Wind ${wind} km/h • Humidity ${humidity}% • Precip ${precip} mm`);
+        set('weatherLocation',  'Catarman, Northern Samar');
+
+      } catch (err) {
+        console.warn('[ResQ] Weather fetch failed:', err.message);
+      }
+    }
+
+    /* Local clock — updates every second */
+    function tickClock() {
+      const now  = new Date();
+      const time = now.toLocaleTimeString('en-PH', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+      const date = now.toLocaleDateString('en-PH', { weekday: 'short', month: 'short', day: 'numeric' });
+      const tEl = document.getElementById('localTime');
+      const dEl = document.getElementById('localDate');
+      if (tEl) tEl.textContent = time;
+      if (dEl) dEl.textContent = date;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadWeather();
+      setInterval(loadWeather, 10 * 60 * 1000); // refresh every 10 min
+
+      tickClock();
+      setInterval(tickClock, 1000);
+    });
+  </script>
 </body>
 </html>
