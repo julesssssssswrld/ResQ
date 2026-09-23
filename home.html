@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Municipal Public Safety & Disaster Monitoring Portal - Catarman">
+  <title>ResQ - Catarman Public Safety Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="home.css">
+</head>
+<body>
+  <main class="home-app">
+
+    <!-- Top Navigation Header -->
+    <header class="home-header">
+      <h1 class="portal-brand">ResQ</h1>
+      <p class="portal-sub">Catarman Public Safety Portal</p>
+    </header>
+
+    <!-- Top Grid: Giant Advisory Card & Weather/Time Companion -->
+    <section class="hero-grid">
+      
+      <!-- Giant Advisory Card -->
+      <article class="card advisory-card" id="advisorySection">
+        <div class="advisory-top">
+          <div class="advisory-meta-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+            <span id="advisoryDate">-</span>
+          </div>
+        </div>
+        <div class="advisory-content">
+          <h2 class="advisory-title" id="advisoryTitle">-</h2>
+          <p class="advisory-body" id="advisoryBody">-</p>
+        </div>
+      </article>
+
+      <!-- Weather & Time Companion Widget -->
+      <aside class="card weather-card" id="weatherSection">
+        <header class="weather-header">
+          <span class="location-tag">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+            <span id="weatherLocation">Catarman</span>
+          </span>
+        </header>
+
+        <div class="widget-block">
+          <span class="block-label">Time & Date</span>
+          <div class="time-row">
+            <span class="widget-time" id="localTime">-</span>
+            <span class="widget-date" id="localDate">-</span>
+          </div>
+        </div>
+
+        <div class="widget-block">
+          <span class="block-label">Weather Status</span>
+          <div class="weather-row">
+            <div class="weather-temp-wrap">
+              <span class="weather-temp" id="weatherTemp">-</span>
+              <span class="weather-cond" id="weatherCondition">-</span>
+            </div>
+            <div class="weather-icon-badge" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+              </svg>
+            </div>
+          </div>
+          <span class="weather-details" id="weatherDetails">-</span>
+        </div>
+      </aside>
+
+    </section>
+
+    <!-- Public Services & Response Directory (4-col Desktop Grid) -->
+    <section id="directorySection">
+      <header class="section-heading">
+        <h2 class="grid-title">Public Services & Response Directory</h2>
+        <p class="section-sub">Municipal response departments and emergency units</p>
+      </header>
+
+      <div class="directory-grid" id="directoryGrid">
+        <!-- Skeleton Cards -->
+        <article class="sk-card" aria-hidden="true">
+          <div class="sk-top">
+            <div class="sk-box"></div>
+            <div class="sk-pill"></div>
+          </div>
+          <div class="sk-body">
+            <div class="sk-bar sk-w-70"></div>
+            <div class="sk-bar sk-w-45"></div>
+          </div>
+        </article>
+
+        <article class="sk-card" aria-hidden="true">
+          <div class="sk-top">
+            <div class="sk-box"></div>
+            <div class="sk-pill"></div>
+          </div>
+          <div class="sk-body">
+            <div class="sk-bar sk-w-70"></div>
+            <div class="sk-bar sk-w-45"></div>
+          </div>
+        </article>
+
+        <article class="sk-card" aria-hidden="true">
+          <div class="sk-top">
+            <div class="sk-box"></div>
+            <div class="sk-pill"></div>
+          </div>
+          <div class="sk-body">
+            <div class="sk-bar sk-w-70"></div>
+            <div class="sk-bar sk-w-45"></div>
+          </div>
+        </article>
+
+        <article class="sk-card" aria-hidden="true">
+          <div class="sk-top">
+            <div class="sk-box"></div>
+            <div class="sk-pill"></div>
+          </div>
+          <div class="sk-body">
+            <div class="sk-bar sk-w-70"></div>
+            <div class="sk-bar sk-w-45"></div>
+          </div>
+        </article>
+
+        <article class="sk-card" aria-hidden="true">
+          <div class="sk-top">
+            <div class="sk-box"></div>
+            <div class="sk-pill"></div>
+          </div>
+          <div class="sk-body">
+            <div class="sk-bar sk-w-70"></div>
+            <div class="sk-bar sk-w-45"></div>
+          </div>
+        </article>
+
+        <article class="sk-card" aria-hidden="true">
+          <div class="sk-top">
+            <div class="sk-box"></div>
+            <div class="sk-pill"></div>
+          </div>
+          <div class="sk-body">
+            <div class="sk-bar sk-w-70"></div>
+            <div class="sk-bar sk-w-45"></div>
+          </div>
+        </article>
+
+        <article class="sk-card" aria-hidden="true">
+          <div class="sk-top">
+            <div class="sk-box"></div>
+            <div class="sk-pill"></div>
+          </div>
+          <div class="sk-body">
+            <div class="sk-bar sk-w-70"></div>
+            <div class="sk-bar sk-w-45"></div>
+          </div>
+        </article>
+
+        <article class="sk-card" aria-hidden="true">
+          <div class="sk-top">
+            <div class="sk-box"></div>
+            <div class="sk-pill"></div>
+          </div>
+          <div class="sk-body">
+            <div class="sk-bar sk-w-70"></div>
+            <div class="sk-bar sk-w-45"></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Modular Injectable Directory Card Blueprint -->
+  <template id="directoryCardTemplate">
+    <a href="#" class="unit-card" data-component="unit-card">
+      <div class="unit-card-header">
+        <div class="unit-icon-chip" data-field="icon-wrap" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+        </div>
+        <span class="unit-call-arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </span>
+      </div>
+      <div>
+        <h3 class="unit-name" data-field="name"></h3>
+        <div class="unit-val-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+          </svg>
+          <span data-field="hotline"></span>
+        </div>
+      </div>
+    </a>
+  </template>
+</body>
+</html>

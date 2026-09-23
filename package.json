@@ -1,0 +1,10 @@
+{
+  "name": "resq",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ResQ Public Safety & Disaster Monitoring Portal",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  }
+}
